@@ -27,7 +27,7 @@ The `aslr-chain/` subdirectory contains:
   file fingerprints, system GOT equality, marker disposition, and worker
   replacement.
 
-Verify the committed chain offline without starting PHP:
+Verify the saved chain offline without starting PHP:
 
 ```bash
 python3 lab/centos7/verify_evidence.py --evidence evidence/aslr-chain

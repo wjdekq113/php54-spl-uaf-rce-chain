@@ -1,8 +1,7 @@
 # Sources and provenance
 
-This repository is an independent reconstruction and lab validation of a
-historical PHP vulnerability. It does not include PHP source code or vendor
-binaries.
+This repository independently reconstructs and validates a historical PHP
+vulnerability in a build-pinned lab.
 
 ## Direct vulnerability lineage
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline verifier for the committed full-chain evidence bundle."""
+"""Offline verifier for a saved full-chain evidence bundle."""
 from __future__ import annotations
 
 import argparse

@@ -112,10 +112,9 @@ The pinned offsets, hashes, and Build IDs are explicit in
 [`rebase_profile.json`](lab/centos7/rebase_profile.json).  A mismatch stops the
 state machine before the execution payload.
 
-The local fixture emits arbitrary-read bytes as hexadecimal so the public lab
-does not depend on any application-specific HTML, route, query parameter, or
-character encoding.  [`poc/lossy_utf8.py`](poc/lossy_utf8.py) retains the
-bounded UTF-8 replacement/wildcard recovery for lossy rendering sinks.
+The local fixture hex-encodes arbitrary-read output for exact byte
+preservation.  [`poc/lossy_utf8.py`](poc/lossy_utf8.py) implements bounded
+UTF-8 replacement/wildcard recovery for lossy rendering sinks.
 
 ## Vulnerability lineage
 
@@ -175,16 +174,16 @@ PHP exploit:
   supplying an equivalent way to render the forged string;
 - the seven-byte inline command limit remains unchanged.
 
-No absolute ASLR address is committed as a reusable exploit input.  Each run
-begins with a fresh heap leak and recalculates every base.
+Each run begins with a fresh heap leak and recalculates every base.
 
 ## Evidence
 
-Committed evidence is one complete five-case snapshot.  The ASLR subdirectory
-contains the 101-byte leak body, final 176-byte trigger, request-by-request
-trace, and derived-address result.  PIDs, bases, marker token, and dynamic
-payload hashes change on every run; the structural and fingerprint invariants
-must remain constant.  See [evidence/README.md](evidence/README.md).
+The evidence bundle records one complete five-case snapshot.  The ASLR
+subdirectory contains the 101-byte leak body, final 176-byte trigger,
+request-by-request trace, and derived-address result.  PIDs, bases, marker
+token, and dynamic payload hashes change on every run; the structural and
+fingerprint invariants must remain constant.  See
+[evidence/README.md](evidence/README.md).
 
 ## Repository layout
 

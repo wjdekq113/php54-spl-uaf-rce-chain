@@ -1,9 +1,7 @@
 # Heap leak, arbitrary read, ASLR rebase, and 176-byte RCE
 
 This document describes the complete chain reproduced by
-`lab/centos7/verify_aslr_chain.py`.  It is a local, build-pinned reconstruction;
-there are no site names, application routes, credentials, or deployment-specific
-parameters in the implementation.
+`lab/centos7/verify_aslr_chain.py` in the build-pinned local environment.
 
 ## Chain summary
 
