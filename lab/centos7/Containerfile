@@ -1,0 +1,98 @@
+# syntax=docker/dockerfile:1
+# amd64-only lab: vendor PHP 5.4.16 plus an upstream-fixed PHP 5.4.44 control.
+ARG C7_IMAGE=docker.io/library/centos@sha256:dead07b4d8ed7e29e98de0f4504d87e8880d4347859d839686a31da35a3b532f
+
+FROM ${C7_IMAGE} AS patched-builder
+SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+ENV LANG=C LC_ALL=C TZ=UTC
+ARG PHP_VERSION=5.4.44
+ARG PHP_URL=https://museum.php.net/php5/php-5.4.44.tar.gz
+ARG PHP_SHA256=1799998e48da3d8f34722840628e18789e26ea21741d4e498ade6749b3266602
+
+RUN printf '%s\n' \
+      '[c7-os]' \
+      'name=CentOS 7.9.2009 frozen os' \
+      'baseurl=https://archive.kernel.org/centos-vault/7.9.2009/os/$basearch/' \
+      'enabled=1' \
+      'gpgcheck=1' \
+      'gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7' \
+      > /etc/yum.repos.d/c7-os.repo \
+ && yum -y --disablerepo='*' --enablerepo=c7-os --setopt=tsflags=nodocs install \
+      gcc-4.8.5-44.el7.x86_64 \
+      make-3.82-24.el7.x86_64 \
+      curl-7.29.0-59.el7.x86_64 \
+      ca-certificates-2020.2.41-70.0.el7_8.noarch \
+      glibc-devel-2.17-317.el7.x86_64 \
+ && yum clean all
+
+WORKDIR /usr/src/php-5.4.44
+RUN curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 \
+      "${PHP_URL}" --output /tmp/php.tar.gz \
+ && echo "${PHP_SHA256}  /tmp/php.tar.gz" | sha256sum -c - \
+ && tar -xzf /tmp/php.tar.gz -C . --strip-components=1 \
+ && ./configure \
+      --prefix="/opt/php-${PHP_VERSION}" \
+      --disable-all \
+      --disable-cli \
+      --disable-libxml \
+      --without-pear \
+ && make -j1 \
+ && make install \
+ && /opt/php-5.4.44/bin/php-cgi -n -m | sed -n '/^date$/p;/^SPL$/p;/^standard$/p'
+
+FROM ${C7_IMAGE}
+SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+ENV LANG=C LC_ALL=C TZ=UTC
+
+RUN printf '%s\n' \
+      '[c7-os]' \
+      'name=CentOS 7.9.2009 frozen os' \
+      'baseurl=https://archive.kernel.org/centos-vault/7.9.2009/os/$basearch/' \
+      'enabled=1' \
+      'gpgcheck=1' \
+      'gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7' \
+      > /etc/yum.repos.d/c7-os.repo \
+ && yum -y --disablerepo='*' --enablerepo=c7-os --setopt=tsflags=nodocs install \
+      php-cli-5.4.16-48.el7.x86_64 \
+      php-fpm-5.4.16-48.el7.x86_64 \
+      php-common-5.4.16-48.el7.x86_64 \
+      glibc-2.17-317.el7.x86_64 \
+      glibc-common-2.17-317.el7.x86_64 \
+      binutils-2.27-44.base.el7.x86_64 \
+      procps-ng-3.3.10-28.el7.x86_64 \
+      python-2.7.5-89.el7.x86_64 \
+ && yum clean all \
+ && rm -rf /var/cache/yum \
+ && sed -i \
+      -e 's/^user = apache/user = root/' \
+      -e 's/^group = apache/group = root/' \
+      -e 's|^listen = .*|listen = 127.0.0.1:9000|' \
+      /etc/php-fpm.d/www.conf
+
+COPY --from=patched-builder /opt/php-5.4.44/bin/php-cgi /opt/php-5.4.44/bin/php-cgi
+COPY lab/vuln_app.php /opt/php54-uaf/vuln_app.php
+COPY lab/rebase_app.php /opt/php54-uaf/rebase_app.php
+COPY lab/centos7/fcgi_client.py /opt/php54-uaf/fcgi_client.py
+COPY lab/centos7/fpm-rebase.conf /opt/php54-uaf/fpm-rebase.conf
+COPY lab/centos7/rebase_profile.json /opt/php54-uaf/rebase_profile.json
+
+RUN chmod 0755 /opt/php-5.4.44/bin/php-cgi /opt/php54-uaf/fcgi_client.py \
+ && chmod 0644 /opt/php54-uaf/vuln_app.php /opt/php54-uaf/rebase_app.php \
+      /opt/php54-uaf/fpm-rebase.conf /opt/php54-uaf/rebase_profile.json \
+ && test "$(rpm -q --qf '%{VERSION}-%{RELEASE}' glibc)" = '2.17-317.el7' \
+ && /usr/bin/php-cgi -n -v \
+ && /usr/bin/php-cgi -n -m > /tmp/vendor-php-modules \
+ && grep -qx 'iconv' /tmp/vendor-php-modules \
+ && /opt/php-5.4.44/bin/php-cgi -n -v \
+ && /opt/php-5.4.44/bin/php-cgi -n -m > /tmp/php-modules \
+ && grep -qx 'date' /tmp/php-modules \
+ && grep -qx 'SPL' /tmp/php-modules \
+ && grep -qx 'standard' /tmp/php-modules \
+ && readelf -rW /lib64/libpthread-2.17.so > /tmp/libpthread-relocations \
+ && grep -q '__libc_system' /tmp/libpthread-relocations \
+ && rm -f /tmp/vendor-php-modules /tmp/php-modules /tmp/libpthread-relocations
+
+LABEL org.opencontainers.image.title="PHP 5.4 SPL ArrayObject UAF reproduction lab" \
+      org.opencontainers.image.description="Isolated CVE-2015-6831 vulnerable and patched-control runtimes"
+
+CMD ["sleep", "infinity"]

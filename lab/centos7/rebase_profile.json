@@ -1,0 +1,40 @@
+{
+  "architecture": "x86_64-little-endian",
+  "zval_bytes": 24,
+  "php": {
+    "path": "/usr/sbin/php-fpm",
+    "package": "php-fpm-5.4.16-48.el7.x86_64",
+    "sha256": "421ad36972e3a81f7b61115998da774d2cd3516a7bb23e3c8f3e72292a7824c8",
+    "build_id": "5507cb5a8ebcc74a9eb83787d4f0b967f2c6b8ba",
+    "build_id_offset": "0x284",
+    "zval_ptr_dtor_offset": "0x257590",
+    "iconv_got_offset": "0x65cc18",
+    "dt_debug_offset": "0x65b6a8"
+  },
+  "libc": {
+    "path": "/lib64/libc-2.17.so",
+    "package": "glibc-2.17-317.el7.x86_64",
+    "sha256": "74d15f40fdb93f1d7e014d2da1d32d459e81ad28700d4de9db54bea83c27149a",
+    "build_id": "f9fafde281e0e0e2af45911ad0fa115b64c2cea8",
+    "build_id_offset": "0x280",
+    "iconv_symbol_offset": "0x22ba0",
+    "system_symbol_offset": "0x432c0"
+  },
+  "loader": {
+    "path": "/lib64/ld-2.17.so",
+    "sha256": "09161025e77fda5d9514ef753504c97377aa59439ad8e03309b2ee17de301d6d",
+    "build_id": "f661f01d5570d658ef1ee970fe90d894b636f15a",
+    "build_id_offset": "0x1d8",
+    "r_debug_offset": "0x223120",
+    "rtld_global_offset": "0x222000",
+    "pthread_pointer_slot": "0xf00"
+  },
+  "pthread": {
+    "path": "/lib64/libpthread-2.17.so",
+    "sha256": "b3bf84a9c150a558b0fe4512ed20e18a346b6485ee0c5e770e55811678505abb",
+    "build_id": "2b482b3bae79def4e5bc9791bc6bbdae0e93e359",
+    "build_id_offset": "0x248",
+    "mutex_lock_symbol_offset": "0x9d00",
+    "system_got_offset": "0x217088"
+  }
+}

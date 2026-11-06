@@ -1,0 +1,26 @@
+name: static-tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Payload and syntax tests
+        run: |
+          python -m unittest discover -s tests -v
+          python -m py_compile poc/*.py lab/*.py lab/centos7/*.py tests/*.py
+          python lab/centos7/verify_evidence.py --evidence evidence/aslr-chain
+      - name: PHP fixture syntax
+        run: |
+          php -l lab/vuln_app.php
+          php -l lab/rebase_app.php

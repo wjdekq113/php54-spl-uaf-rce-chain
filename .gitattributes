@@ -1,0 +1,10 @@
+* text=auto eol=lf
+
+*.bin binary
+*.json text eol=lf
+*.md text eol=lf
+*.py text eol=lf
+*.php text eol=lf
+*.toml text eol=lf
+*.yml text eol=lf
+Containerfile text eol=lf

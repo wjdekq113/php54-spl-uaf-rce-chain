@@ -1,0 +1,82 @@
+{
+  "aslr_chain_inputs": {
+    "rebase_fixture_sha256": "ba902a88d6653f633f1d9f7274acf97e92e4ae7918a160e3bd2356b54518d784",
+    "rebase_profile_sha256": "f16022a6af5d9c5ab9433d68d2e51addc369128868815aef99827cbff3777150",
+    "verifier_sha256": "72844ea4723a51345bdb2ba558c22beba4d4266dd21462ec05e7a8907fdec9b8"
+  },
+  "base_image_digest": "sha256:dead07b4d8ed7e29e98de0f4504d87e8880d4347859d839686a31da35a3b532f",
+  "binaries": {
+    "/lib64/ld-2.17.so": {
+      "build_id": "f661f01d5570d658ef1ee970fe90d894b636f15a",
+      "sha256": "09161025e77fda5d9514ef753504c97377aa59439ad8e03309b2ee17de301d6d"
+    },
+    "/lib64/libc-2.17.so": {
+      "build_id": "f9fafde281e0e0e2af45911ad0fa115b64c2cea8",
+      "sha256": "74d15f40fdb93f1d7e014d2da1d32d459e81ad28700d4de9db54bea83c27149a"
+    },
+    "/lib64/libpthread-2.17.so": {
+      "build_id": "2b482b3bae79def4e5bc9791bc6bbdae0e93e359",
+      "sha256": "b3bf84a9c150a558b0fe4512ed20e18a346b6485ee0c5e770e55811678505abb"
+    },
+    "/opt/php-5.4.44/bin/php-cgi": {
+      "build_id": "4fdcc20bc7dc4fdaefb2d7b18678f65cb2ddfb87",
+      "sha256": "651fe1d490a289ce65cd817d6240f90a67b558f1eacb38d9d221e966c7bb35a9"
+    },
+    "/usr/bin/php-cgi": {
+      "build_id": "3a394e9eda9e503ca2fb435aac8da6485c0303d9",
+      "sha256": "f79f5da3fa24f046233b936a45c5a573da2a43390f3735bf14463c92d54a2cb1"
+    },
+    "/usr/sbin/php-fpm": {
+      "build_id": "5507cb5a8ebcc74a9eb83787d4f0b967f2c6b8ba",
+      "sha256": "421ad36972e3a81f7b61115998da774d2cd3516a7bb23e3c8f3e72292a7824c8"
+    }
+  },
+  "captured_at": "2026-11-06T09:21:27.544110+00:00",
+  "containerfile_sha256": "d7051e5e1e020d77a818b8d7a59ed5274dc6f2567e2bfc298dc9768783c9f047",
+  "host_yama_ptrace_scope": "0",
+  "lab_image": {
+    "architecture": "amd64",
+    "created": "2026-11-06T09:16:00.765151264Z",
+    "digest": "sha256:2207d1546c4f54d5d6e5cbd092be06a4d5d8aa8c76a497f696d0e555177cb2cb",
+    "id": "157eacf24dfe92381d4a3ac7a616032e7cec9c41a54e3e216f3d22e65ae5116f",
+    "repo_digests": [
+      "localhost/php54-spl-uaf-lab@sha256:2207d1546c4f54d5d6e5cbd092be06a4d5d8aa8c76a497f696d0e555177cb2cb"
+    ]
+  },
+  "libpthread_system_relocation_lines": [
+    "0000000000217088  0000001200000007 R_X86_64_JUMP_SLOT     0000000000000000 __libc_system@GLIBC_PRIVATE + 0"
+  ],
+  "libpthread_system_relocation_offset": "0x217088",
+  "packages": [
+    "php-cli-5.4.16-48.el7.x86_64",
+    "php-fpm-5.4.16-48.el7.x86_64",
+    "php-common-5.4.16-48.el7.x86_64",
+    "glibc-2.17-317.el7.x86_64",
+    "glibc-common-2.17-317.el7.x86_64",
+    "binutils-2.27-44.base.el7.x86_64",
+    "python-2.7.5-89.el7.x86_64"
+  ],
+  "php_5_4_44_source": {
+    "sha256": "1799998e48da3d8f34722840628e18789e26ea21741d4e498ade6749b3266602",
+    "url": "https://museum.php.net/php5/php-5.4.44.tar.gz"
+  },
+  "rpm_verify": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "versions": {
+    "container_uname": "Linux e28008abc2fc 6.19.14+kali-amd64 #1 SMP PREEMPT_DYNAMIC Kali 6.19.14-1+kali1 (2026-05-05) x86_64 x86_64 x86_64 GNU/Linux",
+    "host_platform": "Linux-6.19.14+kali-amd64-x86_64-with-glibc2.43",
+    "host_python": "3.14.6",
+    "patched_php": [
+      "PHP 5.4.44 (cgi-fcgi) (built: Nov  6 2026 06:38:53)",
+      "Copyright (c) 1997-2014 The PHP Group"
+    ],
+    "podman": "podman version 5.8.6",
+    "vendor_php": [
+      "PHP 5.4.16 (cgi-fcgi) (built: Apr  1 2020 04:07:17)",
+      "Copyright (c) 1997-2013 The PHP Group"
+    ]
+  }
+}
