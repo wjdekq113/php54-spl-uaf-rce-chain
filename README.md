@@ -2,7 +2,7 @@
 
 [![static-tests](https://github.com/wjdekq113/php54-spl-uaf-rce-chain/actions/workflows/static-tests.yml/badge.svg)](https://github.com/wjdekq113/php54-spl-uaf-rce-chain/actions/workflows/static-tests.yml)
 
-[한국어](README.ko.md) · [Complete ASLR chain](ASLR_CHAIN.md) · [Sources](SOURCES.md) · [Evidence](evidence/README.md)
+[Complete ASLR chain](ASLR_CHAIN.md) · [Sources](SOURCES.md) · [Evidence](evidence/README.md)
 
 This repository reconstructs a complete, build-pinned code-execution chain for
 **CVE-2015-6831** on PHP 5.4:
